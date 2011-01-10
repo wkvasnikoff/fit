@@ -1,0 +1,18 @@
+body {
+	padding: 20px;
+
+}
+
+
+div.login {
+
+
+}
+
+form.login div span {
+	font-weight: bold;
+	width: 100px;
+	display: inline-block;
+}
+
+
