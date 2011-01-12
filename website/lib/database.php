@@ -1,0 +1,38 @@
+<?php
+
+class Database
+{
+	private $connection;
+
+	public function __construct($db)
+	{
+		$xml = simplexml_load_file('/var/www/biggest/etc/config.xml');
+		$dbinfo = $xml->xpath("db/connection[@name='" . $db . "']");
+		$dbinfo = $dbinfo[0];
+
+		$this->connection = new mysqli(
+			$dbinfo->host, 
+			$dbinfo->username,
+			$dbinfo->password,
+			$dbinfo->dbname
+		);
+		
+	}
+
+
+	public function query($sql)
+	{
+		$result = $this->connection->query($sql);
+		
+		$rows = array();
+		while($row = $result->fetch_assoc()) {
+			$rows[] = $row;
+		}
+		
+		return $rows;
+	}
+
+}
+
+
+

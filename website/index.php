@@ -1,14 +1,17 @@
 <?php
 
+require_once 'lib/database.php';
+
 $error = '';
 # login
 if(
 	array_key_exists('username', $_POST) && 
 	array_key_exists('password', $_POST)
 ) {
-	echo 'test';
 
-
+	$db = new Database('biggest');
+	$rows = $db->query('select * from user');
+	print_r($rows);
 }
 
 
