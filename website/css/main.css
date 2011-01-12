@@ -1,12 +1,18 @@
+
+/* General */
+
 body {
 	padding: 20px;
-
 }
 
+div.error {
+	color: red;
+}
 
-div.login {
+/* Login Page */
 
-
+form.login div {
+	padding-bottom: 5px;
 }
 
 form.login div span {
@@ -15,4 +21,22 @@ form.login div span {
 	display: inline-block;
 }
 
+/* mypage */
 
+table.log {
+	border-collapse: collapse;
+}
+
+table.log, table.log th, table.log td {
+	border: 1px solid #000;
+	padding: 5px;
+}
+
+table.log th {
+	background-color: #43aa27;
+	color: #fff;
+}
+
+table.log tr:nth-child(even) {
+	background-color: #aaa;
+}

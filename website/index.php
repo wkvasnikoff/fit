@@ -1,40 +1,51 @@
 <?php
+session_start();
 
 require_once 'lib/database.php';
 
-$error = '';
-# login
-if(
-	array_key_exists('username', $_POST) && 
-	array_key_exists('password', $_POST)
-) {
+$headers = array(
+	'<link rel="stylesheet" type="text/css" href="css/main.css" />'
+);
 
-	$db = new Database('biggest');
-	$rows = $db->query('select * from user');
-	print_r($rows);
+// Already Logged in
+if(isset($_SESSION['userID'])) {
+	header('Location: mypage.php');
+	exit;
 }
 
+# login
+$error = '';
+if( isset($_POST['username']) && isset($_POST['password']) ) {
+	$db = new Database('biggest');
+	$rows = $db->query("select ID, realname from user where username = '%s' and password='%s'",
+		array($_POST['username'], $_POST['password']));
 
+	if(count($rows) > 0) {
+		$row = $rows[0];
+		$_SESSION['userID'] = $row['ID'];
+		$_SESSION['realname'] = $row['realname'];
+		header('Location: mypage.php');
+		exit;
+	} else {
+		$error = '<div class="error">Your username or password is incorrect.</div>';
+	}
+}
 
-?><!DOCTYPE HTML>
-<html>
-	<head>
-		<title>Biggest Loser</title>
-		<link rel="stylesheet" type="text/css" href="css/main.css" />
+include('tmpl/header.php');
+?>
 
-	</head>
-	<body>
-		<h1>Biggest Loser</h1>
+<h1>Biggest Loser</h1>
 
-		<?= $error ?>
+<form method="POST" class="login" >
+	<div><span>Username</span><input name="username" id="username" type="text" /></div>
+	<div><span>Password</span><input name="password" id="password" type="password" /></div>
+	<br />
+	<button type="submit">Login</button>
+</form>
 
-		<form method="POST" class="login" >
-			<div><span>Username</span><input name="username" id="username" type="text" /></div>
-			<div><span>Password</span><input name="password" id="password" type="password" /></div>
-			<br />
-			<button type="submit">Login</button>
+<?= $error ?>
 
-		</form>
-
-	</body>
+<?php
+include 'tmpl/footer.php';
+?>
 </html>

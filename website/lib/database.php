@@ -19,19 +19,26 @@ class Database
 		
 	}
 
-
-	public function query($sql)
+	public function query($sql, $params = array())
 	{
+		foreach($params as &$param) {
+			$param = $this->connection->real_escape_string($param);
+		}
+
+		$sql = vsprintf($sql, $params);
 		$result = $this->connection->query($sql);
 		
 		$rows = array();
+		if(!$result) {
+			return array();
+		}
+
 		while($row = $result->fetch_assoc()) {
 			$rows[] = $row;
 		}
 		
 		return $rows;
 	}
-
 }
 
 
