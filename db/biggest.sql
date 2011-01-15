@@ -2,7 +2,8 @@ create table user (
   ID int not null auto_increment primary key,
   realname varchar(30) not null,
   username varchar(30) not null,
-  password varchar(30) not null
+  password varchar(30) not null,
+  height   int not null
 ) type innodb;
 
 

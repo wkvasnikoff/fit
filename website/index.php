@@ -22,7 +22,7 @@ if( isset($_POST['username']) && isset($_POST['password']) ) {
 
 	if(count($rows) > 0) {
 		$row = $rows[0];
-		$_SESSION['userID'] = $row['ID'];
+		$_SESSION['userID'] = intval($row['ID']);
 		$_SESSION['realname'] = $row['realname'];
 		header('Location: mypage.php');
 		exit;

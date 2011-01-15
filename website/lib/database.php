@@ -19,7 +19,7 @@ class Database
 		
 	}
 
-	public function query($sql, $params = array())
+	public function query($sql, $params = array(), $select=true)
 	{
 		foreach($params as &$param) {
 			$param = $this->connection->real_escape_string($param);
@@ -27,7 +27,12 @@ class Database
 
 		$sql = vsprintf($sql, $params);
 		$result = $this->connection->query($sql);
-		
+
+		if(!$select) {
+			return;
+		}
+
+
 		$rows = array();
 		if(!$result) {
 			return array();
