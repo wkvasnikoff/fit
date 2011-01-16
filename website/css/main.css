@@ -1,8 +1,14 @@
 
 /* General */
+h1.title {
+	text-align: center;
+}
 
 body {
 	padding: 20px;
+	width: 850px;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 div.error {
@@ -22,7 +28,6 @@ form.login div span {
 }
 
 /* mypage */
-
 table.log {
 	border-collapse: collapse;
 }
@@ -39,4 +44,20 @@ table.log th {
 
 table.log tr:nth-child(even) {
 	background-color: #aaa;
+}
+
+div.bmi-key {
+	float: right;
+	width: 280px;
+}
+
+/* newuser */
+form.new-user div {
+	padding-bottom: 5px;
+}
+
+form.new-user div span {
+	font-weight: bold;
+	width: 200px;
+	display: inline-block;
 }

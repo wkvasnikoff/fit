@@ -14,7 +14,7 @@ if(isset($_SESSION['userID'])) {
 }
 
 # login
-$error = '';
+$msg = '';
 if( isset($_POST['username']) && isset($_POST['password']) ) {
 	$db = new Database('biggest');
 	$rows = $db->query("select ID, realname from user where username = '%s' and password='%s'",
@@ -27,7 +27,7 @@ if( isset($_POST['username']) && isset($_POST['password']) ) {
 		header('Location: mypage.php');
 		exit;
 	} else {
-		$error = '<div class="error">Your username or password is incorrect.</div>';
+		$msg = '<div class="error">Your username or password is incorrect.</div>';
 	}
 }
 
@@ -43,9 +43,11 @@ include('tmpl/header.php');
 	<button type="submit">Login</button>
 </form>
 
-<?= $error ?>
+<?= $msg ?>
+<br /><br />
+<a href="newuser.php">Create User</a>
+
 
 <?php
 include 'tmpl/footer.php';
 ?>
-</html>

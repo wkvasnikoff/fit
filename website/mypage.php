@@ -2,9 +2,14 @@
 session_start();
 
 require_once 'lib/database.php';
+require_once 'lib/weight.php';
 
 $headers = array(
-	'<link rel="stylesheet" type="text/css" href="css/main.css" />'
+	'<!--[if IE]><script language="javascript" type="text/javascript" src="js/excanvas.js"></script><![endif]-->',
+	'<script type="text/javascript" src="js/jquery-1.4.2.min.js" ></script>',
+	'<script type="text/javascript" src="js/jquery.jqplot.min.js"></script>',
+	'<link rel="stylesheet" type="text/css" href="css/main.css" />',
+	'<link rel="stylesheet" type="text/css" href="js/jquery.jqplot.css" />',
 );
 
 // Already Logged in
@@ -14,7 +19,7 @@ if(!isset($_SESSION['userID'])) {
 }
 
 # logout
-$error = '';
+$msg = '';
 if( isset($_GET['logout']) && $_GET['logout'] == 1) {
 	session_destroy();
 	header('Location: /');
@@ -24,10 +29,10 @@ if( isset($_GET['logout']) && $_GET['logout'] == 1) {
 $db = new Database('biggest');
 
 # record weight
-$error = '';
+$msg = '';
 if( isset($_POST['weight'])) {
 	if(!preg_match('/^\d+$/', $_POST['weight'])) {
-		$error = '<div class="error">Please enter you valid weight.</div>';
+		$msg = '<div class="error">Please enter you valid weight.</div>';
 	} else {
 		$rows = $db->query('select date from weighin where userID = %d order by date desc limit 1', array($_SESSION['userID']));
 		$sameDay = false;
@@ -74,26 +79,40 @@ foreach($rows as $row) {
 }
 
 
+# chart data
+$chartData = getChartData();
+
 include('tmpl/header.php');
 ?>
 
 <a style="float:right;" href="mypage.php?logout=1">Log Out</a>
 
-<h1>Biggest Loser</h1>
+<h1 class="title">Biggest Loser</h1>
 
-<form method="POST">
-	<h2>Enter Weight</h2>
-	<input type="text" name="weight" /> <br /><br /> 
-	<button type="submit">Submit</button>
-</form>
+<div class="weight-form">
+	<form method="POST">
+		<b>Enter Weight</b>&nbsp; 
+		<input type="text" name="weight" /> <button type="submit">Submit</button>
+	</form>
 
-<?= $error ?>
+	<?= $msg ?>
+</div>
 
-<hr />
 
+<div class="bmi-key">
+	<h3>BMI Categories:</h3>
+	<ul>
+		<li>Under Weight = 18.5 or less</li>
+		<li>Normal weight = 18.5 to 24.9</li>
+		<li>Over weight = 25 to 29.9</li>
+		<li>Obesity = 30 or greater</li>
+	</ul>
+</div>
+
+<? if($tableInfo): ?>
 <h2>My Log</h2>
 <table class="log">
-<tr><th>Date</th><th>Weight</th><th>BMI</th><th>Body Weight Change</th></tr>
+<tr><th>Date</th><th>Weight</th><th>BMI</th><th>Percent Loss</th></tr>
 <?foreach($tableInfo as $row): ?>
 	<tr>
 		<td><?=$row['date'] ?></td>
@@ -103,8 +122,26 @@ include('tmpl/header.php');
 	</tr>
 <?endforeach?>
 </table>
+<? endif ?>
+<hr />
+<br />
 
+<div id="chartdiv" style="height:400px;width:800px; "></div>
 
+<script type="text/javascript">
+
+	$.jqplot('chartdiv',  [
+		<?= $chartData['data'] ?>
+		], {
+		title: "Percent Change Comparison",
+		axes: { yaxis:{min: -50, max: 10}, xaxis:{min: 1, max: 100, ticks: [0,7,14,21,28,35,42,49,56,63,70,77,84,91,98]} },
+		series: [
+			<?= $chartData['names'] ?>
+		],
+		legend: { show: true}
+	});
+
+</script>
 
 <?php
 include 'tmpl/footer.php';
