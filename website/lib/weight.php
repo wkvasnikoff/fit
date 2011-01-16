@@ -26,7 +26,10 @@ function getChartData()
 
 			$points = '[' . join(',', $points) . ']';
 			$output['data'][] = $points;
+		} else {
+			$output['data'][] = '[[]]';
 		}
+
 
 	}
 

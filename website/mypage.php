@@ -123,10 +123,10 @@ include('tmpl/header.php');
 <?endforeach?>
 </table>
 <? endif ?>
-<hr />
+<hr style="clear: both;" />
 <br />
 
-<div id="chartdiv" style="height:400px;width:800px; "></div>
+<div id="chartdiv" style="height:400px;width:800px;"></div>
 
 <script type="text/javascript">
 
@@ -134,7 +134,7 @@ include('tmpl/header.php');
 		<?= $chartData['data'] ?>
 		], {
 		title: "Percent Change Comparison",
-		axes: { yaxis:{min: -50, max: 10}, xaxis:{min: 1, max: 100, ticks: [0,7,14,21,28,35,42,49,56,63,70,77,84,91,98]} },
+		axes: { yaxis:{min: -50, max: 10}, xaxis:{min: 1, max: 98, ticks: [0,7,14,21,28,35,42,49,56,63,70,77,84,91,98]} },
 		series: [
 			<?= $chartData['names'] ?>
 		],
