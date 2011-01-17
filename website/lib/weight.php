@@ -12,8 +12,7 @@ function getChartData()
 
 	foreach($rows as $row){
 		$output['names'][]  = '{label: "' . $row['realname'] . '"}';
-		$weighinRows = $db->query("select datediff(date, '2011-01-10') as day, weight from weighin where userID = %d", array($row['ID']));
-
+		$weighinRows = $db->query("select datediff(date, '2011-01-16') as day, weight from weighin where userID = %d", array($row['ID']));
 
 		if($weighinRows) {
 			$initialWeight = $weighinRows[0]['weight'];
@@ -29,8 +28,6 @@ function getChartData()
 		} else {
 			$output['data'][] = '[[]]';
 		}
-
-
 	}
 
 	$output['data'] = join(',', $output['data']);
@@ -38,5 +35,3 @@ function getChartData()
 
 	return $output;
 }
-
-

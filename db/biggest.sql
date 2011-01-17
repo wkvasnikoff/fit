@@ -10,7 +10,7 @@ create table user (
 create table weighin (
   ID int not null auto_increment primary key,
   userID int not null,
-  weight int not null,
+  weight float not null,
   date timestamp not null default now(),
   index (userID),
   foreign key (userID) references user(ID)

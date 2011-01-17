@@ -31,7 +31,7 @@ $db = new Database('biggest');
 # record weight
 $msg = '';
 if( isset($_POST['weight'])) {
-	if(!preg_match('/^\d+$/', $_POST['weight'])) {
+	if(!preg_match('/^\d+(\.\d+)?$/', $_POST['weight'])) {
 		$msg = '<div class="error">Please enter you valid weight.</div>';
 	} else {
 		$rows = $db->query('select date from weighin where userID = %d order by date desc limit 1', array($_SESSION['userID']));
@@ -44,14 +44,14 @@ if( isset($_POST['weight'])) {
 			}
 		}
 		
-		$weight = intval($_POST['weight']);
+		$weight = floatval($_POST['weight']);
 		if($sameDay) {
-			$db->query( "update weighin set weight = %d, date = now() where " . 
+			$db->query( "update weighin set weight = %f, date = now() where " . 
 				"userID = %d and date_format(date, '%%Y-%%m-%%d') = date_format(now(), '%%Y-%%m-%%d')",
 				array($weight, $_SESSION['userID'], $weight), false);
 			
 		} else {
-			$db->query("insert into weighin (userID, weight) values (%d, %d)", array($_SESSION['userID'], $weight), false);
+			$db->query("insert into weighin (userID, weight) values (%d, %f)", array($_SESSION['userID'], number_format($weight, 2)), false);
 		}
 	}
 }
@@ -134,7 +134,7 @@ include('tmpl/header.php');
 		<?= $chartData['data'] ?>
 		], {
 		title: "Percent Change Comparison",
-		axes: { yaxis:{min: -50, max: 10}, xaxis:{min: 1, max: 98, ticks: [0,7,14,21,28,35,42,49,56,63,70,77,84,91,98]} },
+		axes: { yaxis:{min: -20, max: 10}, xaxis:{min: 1, max: 30, ticks: [0,7,14,21,28/*,35,42,49,56,63,70,77,84,91,98*/]} },
 		series: [
 			<?= $chartData['names'] ?>
 		],
