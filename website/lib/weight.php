@@ -1,14 +1,14 @@
 <?php
 
-function saveMinMax(&$state, $datapoint, $minMax)
+function saveMinMax(&$state, $value, $minMax)
 {
 	if($minMax == 'min') {
-		if($datapoint < $state) {
-			$state = $datapoint - 0.1;
+		if($value < $state) {
+			$state = $value;
 		}
 	} elseif($minMax == 'max') {
-		if($datapoint > $datapoint) {
-			$state = $datapoint + 0.1;
+		if($value > $state) {
+			$state = $value;
 		}
 	}
 	
@@ -19,10 +19,10 @@ function getChartData()
 	$output = array(
 		'names' => array(),
 		'data' => array(),
-		'maxX' => 0,
-		'minY' => 0,
-		'maxY' => 0.1,
-		'ticks' => '',
+		'maxX' => 14,
+		'minY' => -10,
+		'maxY' => 1,
+		'ticks' => array(),
 	);
 
 	$db = new Database('biggest');
@@ -30,7 +30,9 @@ function getChartData()
 
 	foreach($rows as $row){
 		$output['names'][]  = '{label: "' . $row['realname'] . '"}';
-		$weighinRows = $db->query("select datediff(date, '2011-01-16') as day, weight from weighin where userID = %d", array($row['ID']));
+		$weighinRows = $db->query(
+			"select datediff(date, '2011-01-16') as day, weight from weighin where userID = %d",
+			array($row['ID']));
 
 		if($weighinRows) {
 			$initialWeight = $weighinRows[0]['weight'];
@@ -55,15 +57,21 @@ function getChartData()
 	$output['data'] = join(',', $output['data']);
 	$output['names'] = join(',', $output['names']);
 
+
+# weekly
+/*
 	$numTicks = ($output['maxX'] / 7) + 1;
 	for($i=0;$i<=$numTicks; $i++) {
 		$output['ticks'][] = $i*7;
 	}
+*/
+
+# daily
+for($i=0; $i <= $output['maxX']+1; $i++) {
+	$output['ticks'][] = $i;
+}
 
 	$output['ticks'] = '[' . join(',', $output['ticks']) . ']';
 	
-
-
-
 	return $output;
 }

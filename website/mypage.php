@@ -82,6 +82,9 @@ foreach($rows as $row) {
 # chart data
 $chartData = getChartData();
 
+# days left
+$daysLeft = ceil((strtotime(getConfig('endDate')) - time() ) / (60*60*24));
+
 include('tmpl/header.php');
 ?>
 
@@ -105,6 +108,8 @@ include('tmpl/header.php');
 		<li>Over weight = 25 to 29.9</li>
 		<li>Obesity = 30 or greater</li>
 	</ul>
+
+	<b>Days Left: <?= $daysLeft ?></b>
 </div>
 
 <? if($tableInfo): ?>
@@ -124,7 +129,7 @@ include('tmpl/header.php');
 <hr style="clear: both;" />
 <br />
 
-<div id="chartdiv" style="height:400px;width:800px;"></div>
+<div id="chartdiv" style="height:400px;"></div>
 
 <script type="text/javascript">
 	$.jqplot('chartdiv',  [
@@ -145,8 +150,17 @@ include('tmpl/header.php');
 		series: [ <?= $chartData['names'] ?>],
 		legend: { show: true}
 	});
-
 </script>
+
+<hr />
+
+<div>
+	<h3>Rules</h3>
+	
+</div>
+
+
+
 
 <?php
 include 'tmpl/footer.php';
