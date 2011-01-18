@@ -3,6 +3,7 @@ session_start();
 
 require_once 'lib/database.php';
 require_once 'lib/weight.php';
+require_once 'lib/config.php';
 
 $headers = array(
 	'<!--[if IE]><script language="javascript" type="text/javascript" src="js/excanvas.js"></script><![endif]-->',
@@ -78,7 +79,6 @@ foreach($rows as $row) {
 	);
 }
 
-
 # chart data
 $chartData = getChartData();
 
@@ -94,10 +94,8 @@ include('tmpl/header.php');
 		<b>Enter Weight</b>&nbsp; 
 		<input type="text" name="weight" /> <button type="submit">Submit</button>
 	</form>
-
 	<?= $msg ?>
 </div>
-
 
 <div class="bmi-key">
 	<h3>BMI Categories:</h3>
@@ -129,15 +127,22 @@ include('tmpl/header.php');
 <div id="chartdiv" style="height:400px;width:800px;"></div>
 
 <script type="text/javascript">
-
 	$.jqplot('chartdiv',  [
 		<?= $chartData['data'] ?>
 		], {
 		title: "Percent Change Comparison",
-		axes: { yaxis:{min: -20, max: 10}, xaxis:{min: 1, max: 30, ticks: [0,7,14,21,28/*,35,42,49,56,63,70,77,84,91,98*/]} },
-		series: [
-			<?= $chartData['names'] ?>
-		],
+		axes: {
+			yaxis:{
+				min: <?= $chartData['minY'] ?>, 
+				max: <?= $chartData['maxY']?>
+			}, 
+			xaxis:{
+				min: 0,
+				max: 30,
+				ticks: <?= $chartData['ticks']?>
+			}
+		},
+		series: [ <?= $chartData['names'] ?>],
 		legend: { show: true}
 	});
 
