@@ -6,7 +6,7 @@ h1.title {
 
 body {
 	padding: 20px;
-	width: 850px;
+	width: 1000px;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -28,6 +28,12 @@ form.login div span {
 }
 
 /* mypage */
+
+span.days-left {
+font-size: 170%;
+
+}
+
 table.log {
 	border-collapse: collapse;
 }
@@ -49,6 +55,11 @@ table.log tr:nth-child(even) {
 div.bmi-key {
 	float: right;
 	width: 280px;
+}
+
+div.weight-form {
+	width: 400px;
+
 }
 
 /* newuser */

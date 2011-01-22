@@ -8,6 +8,7 @@
 				echo "\t\t\t$header\n";
 			}
 		?>
+		<meta charset="UTF-8" /> 
 	</head>
 	<body>
 

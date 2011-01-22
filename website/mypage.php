@@ -29,6 +29,19 @@ if( isset($_GET['logout']) && $_GET['logout'] == 1) {
 
 $db = new Database('biggest');
 
+// -------- Messages -------------
+if(isset($_POST['message'])) {
+	$db->query("insert into message (userID, message) values (%d, '%s')", 
+		array($_SESSION['userID'], $_POST['message']), false);
+	header('Location: /mypage.php');
+	exit;
+}
+$messages = $db->query("select realname, message, date_format(date, '%%m-%%d-%%Y %%h:%%i%%p') date from message m " . 
+	'join user u on m.userID = u.ID order by date desc');
+
+
+// ---------------
+
 # record weight
 $msg = '';
 if( isset($_POST['weight'])) {
@@ -92,6 +105,20 @@ include('tmpl/header.php');
 
 <h1 class="title">Biggest Loser</h1>
 
+<div class="bmi-key">
+	<span class="days-left">Days Left: <?= $daysLeft ?></span>
+	
+	<h3>BMI Categories:</h3>
+	<ul>
+		<li>Under Weight = 18.5 or less</li>
+		<li>Normal weight = 18.5 to 24.9</li>
+		<li>Over weight = 25 to 29.9</li>
+		<li>Obesity = 30 or greater</li>
+	</ul>
+</div>
+
+
+
 <div class="weight-form">
 	<form method="POST">
 		<b>Enter Weight</b>&nbsp; 
@@ -100,17 +127,6 @@ include('tmpl/header.php');
 	<?= $msg ?>
 </div>
 
-<div class="bmi-key">
-	<h3>BMI Categories:</h3>
-	<ul>
-		<li>Under Weight = 18.5 or less</li>
-		<li>Normal weight = 18.5 to 24.9</li>
-		<li>Over weight = 25 to 29.9</li>
-		<li>Obesity = 30 or greater</li>
-	</ul>
-
-	<b>Days Left: <?= $daysLeft ?></b>
-</div>
 
 <? if($tableInfo): ?>
 <h2>My Log</h2>
@@ -126,10 +142,30 @@ include('tmpl/header.php');
 <?endforeach?>
 </table>
 <? endif ?>
-<hr style="clear: both;" />
 <br />
+<hr style="clear: both;" />
 
-<div id="chartdiv" style="height:400px;"></div>
+<div>
+	<div style="width: 500px; float: right; max-height: 230px; overflow-y: auto; ">
+		<?foreach($messages as $message): ?>
+			<?= '<b>' . $message['realname'] . ':</b><pre>' . htmlentities($message['message']) . ' - ' . $message['date'] . "</pre>"  ?>
+		<?endForeach?>
+	</div>
+
+	<form style="width: 400px;" method="POST">
+
+		<h2>Sent Message To The Group</h2>
+		<textarea name="message" style="width: 100%; height: 150px;"></textarea><br />
+		<button type="submit">Send Message To Group</button>
+	</form>
+
+</div>
+
+
+
+<hr style="clear: both;" />
+
+<div id="chartdiv" style="height:450px;"></div>
 
 <script type="text/javascript">
 	$.jqplot('chartdiv',  [
@@ -154,10 +190,6 @@ include('tmpl/header.php');
 
 <hr />
 
-<div>
-	<h3>Rules</h3>
-	
-</div>
 
 
 

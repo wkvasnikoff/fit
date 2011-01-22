@@ -14,12 +14,12 @@ if(isset($_SESSION['userID'])) {
 }
 
 # login
-$values = array('secret' => '', 'realname' => '', 'username' => '', 'password' => '', 'height' => '');
+$values = array('secret' => '', 'realname' => '', 'username' => '', 'password' => '', 'feet' => '', 'inches' => '');
 $msg = '';
 if( isset($_POST['secret']) && $_POST['secret'] == 'eat right') {
 	$db = new Database('biggest');
 	$db->query("insert into user (realname, username, password, height ) values ('%s', '%s', '%s', '%d')", 
-		array($_POST['realname'], $_POST['username'], $_POST['password'], $_POST['height']), false);
+		array($_POST['realname'], $_POST['username'], $_POST['password'], ($_POST['feet']*12 + $_POST['inches']) ), false);
 	$msg = '<div>User Created, click <a href="/">here</a> to login</div>';
 } elseif(isset($_POST['secret'])){
 	$msg = '<div class="error">Secret is incorrect</div>';
@@ -42,7 +42,11 @@ include('tmpl/header.php');
 	<div><span>Real Name</span><input name="realname" id="realname" type="text" value="<?= $values['realname'] ?>" /></div>
 	<div><span>Your Username</span><input name="username" id="username" type="text" value="<?= $values['username'] ?>" /></div>
 	<div><span>Your Password</span><input name="password" id="password" type="password" value="<?= $values['password'] ?>" /></div>
-	<div><span>Your Height in inches</span><input name="height" type="text" value="<?= $values['height'] ?>" /></div>
+	<div>
+		<span>Your Height</span>
+			<input style="width: 30px;" name="feet" type="text" value="<?= $values['feet'] ?>" /> feet 
+			<input style="width: 30px;" name="inches" type="text" value="<?= $values['inches'] ?>" /> inches
+	</div>
 
 	<br />
 	<button type="submit">Create User</button>
