@@ -36,7 +36,7 @@ if(isset($_POST['message'])) {
 	header('Location: /mypage.php');
 	exit;
 }
-$messages = $db->query("select realname, message, date_format(date, '%%m-%%d-%%Y %%h:%%i%%p') date from message m " . 
+$messages = $db->query("select realname, message, date_format(date, '%%m-%%d-%%Y %%h:%%i%%p') datef from message m " . 
 	'join user u on m.userID = u.ID order by date desc');
 
 
@@ -67,6 +67,8 @@ if( isset($_POST['weight'])) {
 		} else {
 			$db->query("insert into weighin (userID, weight) values (%d, %f)", array($_SESSION['userID'], number_format($weight, 2)), false);
 		}
+		header('Location: /mypage.php');
+		exit;
 	}
 }
 
@@ -148,7 +150,7 @@ include('tmpl/header.php');
 <div>
 	<div style="width: 500px; float: right; max-height: 230px; overflow-y: auto; ">
 		<?foreach($messages as $message): ?>
-			<?= '<b>' . $message['realname'] . ':</b><pre>' . htmlentities($message['message']) . ' - ' . $message['date'] . "</pre>"  ?>
+			<?= '<div><b>' . htmlentities($message['realname']) . ': </b>' . htmlentities($message['message']) . ' - ' . $message['datef'] . '</div><br />'?>
 		<?endForeach?>
 	</div>
 
