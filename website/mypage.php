@@ -189,12 +189,13 @@ include('tmpl/header.php');
 		legend: { show: true}
 	});
 </script>
-
 <hr />
 
-
-
-
+<h1>Rules</h1>
+<ol>
+	<li>You must enter you're weight at minimum once a week on Sundays.</li>
+	<li>Prizes: 1st $160, 2nd $80, and 3rd $40.</li>
+</ol>
 
 <?php
 include 'tmpl/footer.php';
