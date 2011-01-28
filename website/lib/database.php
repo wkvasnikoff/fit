@@ -32,7 +32,6 @@ class Database
 			return;
 		}
 
-
 		$rows = array();
 		if(!$result) {
 			return array();
