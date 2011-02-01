@@ -57,19 +57,18 @@ function getChartData()
 	$output['data'] = join(',', $output['data']);
 	$output['names'] = join(',', $output['names']);
 
+	# weekly
+	/*
+		$numTicks = ($output['maxX'] / 7) + 1;
+		for($i=0;$i<=$numTicks; $i++) {
+			$output['ticks'][] = $i*7;
+		}
+	*/
 
-# weekly
-/*
-	$numTicks = ($output['maxX'] / 7) + 1;
-	for($i=0;$i<=$numTicks; $i++) {
-		$output['ticks'][] = $i*7;
+	# daily
+	for($i=0; $i <= $output['maxX']+1+(floor($output['maxX']*0.20) ); $i++) {
+		$output['ticks'][] = $i;
 	}
-*/
-
-# daily
-for($i=0; $i <= $output['maxX']+1; $i++) {
-	$output['ticks'][] = $i;
-}
 
 	$output['ticks'] = '[' . join(',', $output['ticks']) . ']';
 	
