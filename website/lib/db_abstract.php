@@ -12,7 +12,10 @@ abstract class DB_Abstract
 	public function __get($name)
 	{
 		$name = "m_$name";
-		return $this->$name;
+		if(isset($this->$name)) {
+			return $this->$name;
+		}
+		return;
 	}
 	
 	public function __set($name, $value)
@@ -63,10 +66,38 @@ abstract class DB_Abstract
 		return $objs;
 	}
 
-	public static function save()
+	public function save()
 	{
-		# determine if insert or update
+		$db = new Database('biggest');
+
+		# get relevant properties
+		$reflect = new ReflectionClass($this);
+		$props = $reflect->getProperties(ReflectionProperty::IS_PROTECTED);
+		$nameValue = array();
+		foreach($props as $name => $value) {
+			if(preg_match('/^m_/', $name)) {
+				$nameValue[substr($name, 2)] = $value;
+			}
+		}
+
+		# figure out if insert or update
+		$op = 'update';
+		foreach(static::$keys as $key) {
+			if(!$this->$key) {
+				$op = 'insert';
+			}
+		}
+
+		if($op === 'insert') {
+			$sql = "insert into {$this->tableName} ";
 		
+			
+
+		} else {
+			$sql = "update {$this->tableName} set ";
+			
+			# where clause
+		}
 	}
 
 }
