@@ -1,7 +1,5 @@
 <?php
-session_start();
-
-require_once 'lib/database.php';
+require_once 'lib/Startup.php';
 
 $headers = array(
 	'<link rel="stylesheet" type="text/css" href="css/main.css" />'
@@ -16,22 +14,21 @@ if(isset($_SESSION['userID'])) {
 # login
 $msg = '';
 if( isset($_POST['username']) && isset($_POST['password']) ) {
-	$db = new Database('biggest');
-	$rows = $db->query("select ID, realname from user where username = '%s' and password='%s'",
+	$users = db\User::getByQuery("select * from user where username = '%s' and password='%s'",
 		array($_POST['username'], $_POST['password']));
-
-	if(count($rows) > 0) {
-		$row = $rows[0];
-		$_SESSION['userID'] = intval($row['ID']);
-		$_SESSION['realname'] = $row['realname'];
+	if($users) {
+		$user = $users[0];
+		$_SESSION['userID'] = intval($user->ID);
+		$_SESSION['realname'] = $user->realname;
 		header('Location: mypage.php');
 		exit;
 	} else {
-		$msg = '<div class="error">Your username or password is incorrect.</div>';
+		$msg = '<div class="error">Your username or password is incorrect.</div>';	
 	}
 }
 
 include('tmpl/header.php');
+# ---------------------------------------------------------------------
 ?>
 
 <h1>Biggest Loser</h1>
@@ -46,7 +43,6 @@ include('tmpl/header.php');
 <?= $msg ?>
 <br /><br />
 <a href="newuser.php">Create User</a>
-
 
 <?php
 include 'tmpl/footer.php';

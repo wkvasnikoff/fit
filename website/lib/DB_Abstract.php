@@ -1,5 +1,4 @@
 <?php
-require_once 'lib/database.php';
 
 abstract class DB_Abstract
 {
