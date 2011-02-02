@@ -69,34 +69,75 @@ abstract class DB_Abstract
 	public function save()
 	{
 		$db = new Database('biggest');
+		$fields = array();
+		$values = array();
 
 		# get relevant properties
 		$reflect = new ReflectionClass($this);
+
 		$props = $reflect->getProperties(ReflectionProperty::IS_PROTECTED);
+		
 		$nameValue = array();
-		foreach($props as $name => $value) {
+		foreach($props as $prop) {
+			$name = $prop->name;
 			if(preg_match('/^m_/', $name)) {
-				$nameValue[substr($name, 2)] = $value;
+				$shortName = substr($name, 2);
+				if(in_array($shortName, static::$keys)) {
+					continue;
+				}
+				$fields[] = $shortName;
+				$values[] = $this->$shortName;
 			}
 		}
-
+		
 		# figure out if insert or update
 		$op = 'update';
 		foreach(static::$keys as $key) {
 			if(!$this->$key) {
 				$op = 'insert';
+				break;
 			}
 		}
 
 		if($op === 'insert') {
-			$sql = "insert into {$this->tableName} ";
+			$valueFieldPercents = array();
+			foreach($fields as $field) {
+				$valueFieldPercents[] = '\'%s\'';
+			}
+			$valueFieldPercents = join(',', $valueFieldPercents); 
+			$fields = join(', ', $fields);	
+			$sql = sprintf('insert into %s (%s) values (%s)', static::$tableName, $fields, $valueFieldPercents);
 		
-			
-
+			$db->query($sql, $values, false);
 		} else {
-			$sql = "update {$this->tableName} set ";
-			
-			# where clause
+			# Set Clause
+			$setClause = array();
+			foreach($fields as $field) {
+				$setClause[] = "$field='%s'";
+			}
+			$setClause = join(',', $setClause);
+
+			# Where Clause
+			$keyFields = array();
+			$keyValues = array();
+			foreach($props as $prop) {
+				$name = $prop->name;
+				if(preg_match('/^m_/', $name)) {
+					$shortName = substr($name, 2);
+	
+					if(!in_array($shortName, static::$keys)) {
+						continue;
+					}
+
+					$kFields[] = "$shortName='%s'";
+					$kValues[] = $this->$shortName;
+				}
+			}
+			$whereClause = join(',', $kFields);
+
+			$sql = sprintf('update %s set %s where %s', static::$tableName, $setClause, $whereClause);
+			$values = array_merge($values, $kValues);
+			$db->query($sql, $values, false);
 		}
 	}
 

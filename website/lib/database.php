@@ -16,7 +16,6 @@ class Database
 			$dbinfo->password,
 			$dbinfo->dbname
 		);
-		
 	}
 
 	public function query($sql, $params = array(), $select=true)
@@ -44,6 +43,4 @@ class Database
 		return $rows;
 	}
 }
-
-
 

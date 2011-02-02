@@ -5,9 +5,10 @@ require_once 'lib/test.php';
 
 
 
-$test = Test::getByKey(array(1));
+#$test = Test::getByKey(array(1));
 
 
 $test = new Test();
-$test->msg = 'bob';
+$test->ID = 1;
+$test->msg = 'al';
 $test->save();
