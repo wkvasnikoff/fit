@@ -1,7 +1,5 @@
 <?php
-session_start();
-
-require_once 'lib/database.php';
+require_once 'lib/Startup.php';
 
 $headers = array(
 	'<link rel="stylesheet" type="text/css" href="css/main.css" />'
@@ -17,9 +15,13 @@ if(isset($_SESSION['userID'])) {
 $values = array('secret' => '', 'realname' => '', 'username' => '', 'password' => '', 'feet' => '', 'inches' => '');
 $msg = '';
 if( isset($_POST['secret']) && $_POST['secret'] == 'eat right') {
-	$db = new Database('biggest');
-	$db->query("insert into user (realname, username, password, height ) values ('%s', '%s', '%s', '%d')", 
-		array($_POST['realname'], $_POST['username'], $_POST['password'], ($_POST['feet']*12 + $_POST['inches']) ), false);
+
+	$user = new db\User();
+	$user->realname = $_POST['realname'];
+	$user->username = $_POST['username'];
+	$user->password = $_POST['password'];
+	$user->height = $_POST['feet']*12 + $_POST['inches'];
+	$user->save();
 	$msg = '<div>User Created, click <a href="/">here</a> to login</div>';
 } elseif(isset($_POST['secret'])){
 	$msg = '<div class="error">Secret is incorrect</div>';
@@ -31,6 +33,7 @@ if( isset($_POST['secret']) && $_POST['secret'] == 'eat right') {
 }
 
 include('tmpl/header.php');
+# ----------------------------------------------------------
 ?>
 
 <h1>Biggest Loser</h1>
@@ -46,9 +49,8 @@ include('tmpl/header.php');
 		<span>Your Height</span>
 			<input style="width: 30px;" name="feet" type="text" value="<?= $values['feet'] ?>" /> feet 
 			<input style="width: 30px;" name="inches" type="text" value="<?= $values['inches'] ?>" /> inches
-	</div>
+	</div><br />
 
-	<br />
 	<button type="submit">Create User</button>
 </form>
 
@@ -56,4 +58,3 @@ include('tmpl/header.php');
 
 <?php
 include 'tmpl/footer.php';
-?>

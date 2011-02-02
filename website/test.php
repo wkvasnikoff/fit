@@ -1,5 +1,4 @@
 <?php
-require_once('lib/startup.php');
 
 $user = new db\User();
 
