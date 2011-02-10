@@ -136,7 +136,7 @@ include('tmpl/header.php');
 		<?endForeach?>
 	</div>
 
-	<form style="width: 400px;" method="POST">
+	<form style="width: 375px;" method="POST">
 		<h2>Sent Message To The Group</h2>
 		<textarea name="message" style="width: 100%; height: 150px;"></textarea><br />
 		<button type="submit">Send Message To Group</button>
