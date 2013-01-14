@@ -45,8 +45,8 @@ class Chart
 		$output['data'] = join(',', $output['data']);
 		$output['names'] = join(',', $output['names']);
 
-		# daily
-		for($i=0; $i <= $output['maxX']+1+(floor($output['maxX']*0.20) ); $i++) {
+		# weekly
+		for($i=0; $i <= $output['maxX']+1+(floor($output['maxX']*0.20)+7 ); $i+=7) {
 			$output['ticks'][] = $i;
 		}
 

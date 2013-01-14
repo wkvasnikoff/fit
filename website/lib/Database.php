@@ -6,7 +6,7 @@ class Database
 
 	public function __construct($db)
 	{
-		$xml = simplexml_load_file('/var/www/biggest/etc/config.xml');
+		$xml = simplexml_load_file('/var/www/html/biggest/etc/config.xml');
 		$dbinfo = $xml->xpath("db/connection[@name='" . $db . "']");
 		$dbinfo = $dbinfo[0];
 

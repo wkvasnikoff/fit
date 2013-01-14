@@ -3,11 +3,11 @@
 	<db>
 		<connection name="biggest">
 			<host>localhost</host>
-			<username>billk</username>
-			<password></password>
+			<username>fit</username>
+			<password>fit</password>
 			<dbname>biggest</dbname>
 		</connection>
 	</db>
-	<startDate>2011-01-16</startDate>
-	<endDate>2011-04-16</endDate>
+	<startDate>2013-01-14</startDate>
+	<endDate>2013-04-14</endDate>
 </app>

@@ -6,7 +6,7 @@ abstract class DB_Abstract
 	protected static $keys;
 	
 	public function __construct()
-	{}	
+	{}
 	
 	public function __get($name)
 	{

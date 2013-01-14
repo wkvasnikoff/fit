@@ -4,7 +4,7 @@ create table user (
 	username varchar(30) not null,
 	password varchar(30) not null,
 	height   int not null
-) type innodb;
+) engine innodb;
 
 
 create table weighin (
@@ -14,7 +14,7 @@ create table weighin (
 	date timestamp not null default now(),
 	index (userID),
 	foreign key (userID) references user(ID)
-) type innodb;
+) engine innodb;
 
 create table message (
 	ID int not null auto_increment primary key,
@@ -27,5 +27,5 @@ create table message (
 	index(toUserID),
 	index(fromUserID),
 	index(date)
-) type innodb;
+) engine innodb;
 
