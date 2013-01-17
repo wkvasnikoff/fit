@@ -28,7 +28,11 @@ class Database
 		$result = $this->connection->query($sql);
 
 		if(!$select) {
-			return;
+			if($result === false) {
+				echo $this->connection->error;
+				exit;
+			}
+			return $result;
 		}
 
 		$rows = array();

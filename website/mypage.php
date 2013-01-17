@@ -27,7 +27,7 @@ if( isset($_GET['logout']) && $_GET['logout'] == 1) {
 // -------- Messages -------------
 if(isset($_POST['message'])) {
 	$message = new db\Message();
-	$message->userID = $_SESSION['userID'];
+	$message->fromUserID = $_SESSION['userID'];
 	$message->message = $_POST['message'];
 	$message->date = date('Y-m-d G:i:s', time());
 	$message->save();

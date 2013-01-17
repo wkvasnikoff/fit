@@ -7,13 +7,13 @@ class Message extends \DB_Abstract
 	protected static $tableName = 'message';
 
 	protected $m_ID;
-	protected $m_userID;
+	protected $m_fromUserID;
 	protected $m_message;
 	protected $m_date;
 
 	public function getUserRealName()
 	{
-		$user =  User::getByKey($this->userID);	
+		$user =  User::getByKey($this->fromUserID);	
 		return $user->realname;
 	}
 
