@@ -15,11 +15,12 @@ class Chart
 
 		$db = new Database('biggest');
 		$rows = $db->query("select ID, realname from user order by realname");
+		$startDay = date('Y-m-d', strtotime(Config::getConfig('startDate')));
 
 		foreach($rows as $row){
 			$output['names'][]  = '{label: "' . $row['realname'] . '"}';
 			$weighinRows = $db->query(
-				"select datediff(date, '2011-01-16') as day, weight from weighin where userID = %d",
+				"select datediff(date, '$startDay') as day, weight from weighin where userID = %d",
 				array($row['ID']));
 
 			if($weighinRows) {
