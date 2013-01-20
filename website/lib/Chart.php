@@ -20,7 +20,7 @@ class Chart
 		foreach($rows as $row){
 			$output['names'][]  = '{label: "' . $row['realname'] . '"}';
 			$weighinRows = $db->query(
-				"select datediff(date, '$startDay') as day, weight from weighin where userID = %d",
+				"select datediff(date, '$startDay') as day, weight from weighin where userID = %d order by date",
 				array($row['ID']));
 
 			if($weighinRows) {
