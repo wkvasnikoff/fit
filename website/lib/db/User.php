@@ -10,7 +10,7 @@ class User extends \DB_Abstract
 	protected $m_realname;
 	protected $m_username;
 	protected $m_password;
-	protected $m_height;	
+	protected $m_height;
 
 	public function getUserTableData()
 	{
@@ -23,7 +23,6 @@ class User extends \DB_Abstract
 		
 		$output = array();
 		foreach($weights as $weight) {
-
 			$lb = $weight->weight;
 			$bmi = ($lb * 703) / ($height * $height);
 			$date = date('F d, Y', strtotime($weight->date));

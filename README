@@ -1,0 +1,7 @@
+
+requirements:
+* php70u-xml
+* short_tags turned on in /etc/php.ini
+* create database user with select,insert,update privs
+
+
