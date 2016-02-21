@@ -1,7 +1,7 @@
+To install
 
-requirements:
-* php70u-xml
-* short_tags turned on in /etc/php.ini
-* create database user with select,insert,update privs
-
+create mysql or maria db
+run etc/fit.sql against database
+create database user with select,insert,update privs for database
+create a etc/config.xml using etc/example.config.xml as template
 
