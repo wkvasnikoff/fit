@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<app>
+	<db>
+		<connection name="biggest">
+			<host>localhost</host>
+			<username>fit</username>
+			<password>fit</password>
+			<dbname>biggest</dbname>
+		</connection>
+	</db>
+	<startDate>2013-01-14</startDate>
+	<endDate>2013-04-14</endDate>
+</app>
